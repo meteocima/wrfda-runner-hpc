@@ -163,8 +163,5 @@ script to sbatch schedule the simulation. You'll probably have to change content
 of this scripts in order to accomodate your particular server scheduler and configuration.
 
 
-
-
-
 * r2w - https://github.com/meteocima/radar2wrf/
 * dewetra2wrf - https://github.com/meteocima/dewetra2wrf
