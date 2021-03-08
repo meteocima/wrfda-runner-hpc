@@ -67,7 +67,7 @@ export FCFLAGS=-m64
 export FFLAGS=-m64
 export I_MPI_F90=ifort
 
-export BUILD_DIR=~/BUILD
+export BUILD_DIR=~/repos/wrfda-runner-hpc
 export DEPS=$BUILD_DIR/deps/out;
 export DEPS_SRC=$BUILD_DIR/deps/src;
 export PRG_SRC=$BUILD_DIR;
