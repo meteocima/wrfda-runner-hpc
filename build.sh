@@ -38,9 +38,9 @@
 #NPROC=28
 
 # galileo
-#NPROC=36
-#ml intel/pe-xe-2018--binary
-#ml intelmpi/2018--binary
+NPROC=36
+ml intel/pe-xe-2018--binary
+ml intelmpi/2018--binary
 
 # barbora
 #NPROC=28
@@ -93,7 +93,7 @@ export JASPERINC=$DEPS/include
 export ZLIB_BASE=$DEPS
 
 echo ZLIB
-cd $DEPS_SRC/zlib-1.2.5
+cd $DEPS_SRC/zlib-1.2.7
 ./configure --prefix=$DEPS > configure.out 2>  configure.err > configure.out 2>  configure.err
 make clean   > clean.out 2>  clean.err
 make -j $NPROC > compile.out 2>  compile.err
@@ -114,7 +114,7 @@ make -j $NPROC > compile.out 2>  compile.err
 make install > install.out 2>  install.err
 
 echo HDF5
-cd $DEPS_SRC/hdf5-1_8_9
+cd $DEPS_SRC/hdf5-hdf5-1_8_9
 ./configure --prefix=$DEPS --with-zlib=$ZLIB_BASE --enable-fortran > configure.out 2>  configure.err
 make clean  > clean.out 2>  clean.err
 make -j $NPROC > compile.out 2>  compile.err
