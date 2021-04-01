@@ -20,4 +20,4 @@ export NETCDF=$DEPS
 cd $SLURM_SUBMIT_DIR
 
 ulimit -s unlimited
-./wrfda-runner -p DA -i GFS .
+./wrfda-runner -p DA .
