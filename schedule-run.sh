@@ -13,7 +13,7 @@
 #SBATCH --partition=cm2_std
 #SBATCH --qos=cm2_std
 
-export DEPS=~/BUILD-NOCOMP/deps/out;
+export DEPS=$SLURM_SUBMIT_DIR/PRG/deps/out;
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$DEPS/lib
 export NETCDF=$DEPS
 
