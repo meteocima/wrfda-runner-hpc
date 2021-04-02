@@ -28,6 +28,9 @@ stations assimilation data.
 The command is written in Go and sources can be found here: 
 https://github.com/meteocima/wrfda-runner
 
+Prebuilt binaries should be downloaded from
+https://github.com/meteocima/wrfda-runner/releases/latest
+
 ### covar-matrices 
 
 A directory containing pre-built dataset of data needed
