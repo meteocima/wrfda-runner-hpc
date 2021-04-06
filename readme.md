@@ -2,10 +2,12 @@
 
 This repository contains informations and scripts to run a WRFDA simulation on HPC infrastructure.
 
-The script run a simulation under following assumption:
+These simulation has following charactertics:
 
-1) The simulation is guided either by IFS or GFS data. This data should already be 
-    prepared by one or more WPS process.
+1) The simulation is guided either by IFS or GFS datasets. These datasets should already be 
+    prepared by one or more WPS processes. You can use one of our dockers to do this, either [wps-da.gfs](https://github.com/meteocima/wps-da.gfs)
+    or [wps-da.ifs](https://github.com/meteocima/wps-da.ifs).
+
 2) The simulation assimilates radars and/or weather stations data in three
     different cycles, with the first one starting 6 hour before the start of 
     the requested forecast, the second 3 hour before and the same instant of the 
