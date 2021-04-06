@@ -5,15 +5,16 @@ This repository contains informations and scripts to run a WRFDA simulation on H
 These simulation has following charactertics:
 
 1) The simulation is guided either by IFS or GFS datasets. These datasets should already be 
-    prepared by one or more WPS processes. You can use one of our dockers to do this, either [wps-da.gfs](https://github.com/meteocima/wps-da.gfs)
-    or [wps-da.ifs](https://github.com/meteocima/wps-da.ifs).
+    prepared by one or more WPS processes. You can use one of our dockers to do this, either 
+    [wps-da.gfs](https://github.com/meteocima/wps-da.gfs) or [wps-da.ifs](https://github.com/meteocima/wps-da.ifs).
 
 2) The simulation assimilates radars and/or weather stations data in three
     different cycles, with the first one starting 6 hour before the start of 
-    the requested forecast, the second 3 hour before and the same instant of the 
-    start of the requested forecast 
+    the requested forecast, the second 3 hours before and the third the same 
+    instant of the start of the requested forecast.
+
 3) The simulation consists of one or more nested domain, and assimilation
-    of each of this domains happens in a separate process.
+    of each of this domains happens in a separate process. 
 
 ## HOWTO: prepare a directory for a WRFDA simulation on your HPC server.
 
@@ -33,6 +34,9 @@ https://github.com/meteocima/wrfda-runner
 Prebuilt binaries should be downloaded from
 https://github.com/meteocima/wrfda-runner/releases/latest
 
+This repository already contains release v2.0.6 of the binary bundled 
+in source code.
+
 ### covar-matrices 
 
 A directory containing pre-built dataset of data needed
@@ -42,31 +46,34 @@ grid definition etc.)
 
 Moreover, these datasets contains informations that varies according to season.
 wrfda-runner takes care of selecting the appropriate file for season of simulation
-you're running, and in order to do so, files must have following names:
+you're running, and in order to do so, the directory must have following structure:
 
 ```
 covar-matrices
 covar-matrices/summer
-covar-matrices/summer/be_2.5km_d03
-covar-matrices/summer/be_2.5km_d01
-covar-matrices/summer/be_2.5km_d02
+covar-matrices/summer/be_d01
+covar-matrices/summer/be_d03
+covar-matrices/summer/be_d02
 covar-matrices/fall
-covar-matrices/fall/be_2.5km_d03
-covar-matrices/fall/be_2.5km_d01
-covar-matrices/fall/be_2.5km_d02
+covar-matrices/fall/be_d01
+covar-matrices/fall/be_d03
+covar-matrices/fall/be_d02
 covar-matrices/winter
-covar-matrices/winter/be_2.5km_d03
-covar-matrices/winter/be_2.5km_d01
-covar-matrices/winter/be_2.5km_d02
+covar-matrices/winter/be_d01
+covar-matrices/winter/be_d03
+covar-matrices/winter/be_d02
 covar-matrices/spring
-covar-matrices/spring/be_2.5km_d03
-covar-matrices/spring/be_2.5km_d01
-covar-matrices/spring/be_2.5km_d02
+covar-matrices/spring/be_d01
+covar-matrices/spring/be_d03
+covar-matrices/spring/be_d02
 ```
 
 which is, you have to provide a file ending in _d0N for every N domain in your
 configuration, and you have to provide a dataset for each season (or at least,
 for the season of the simulation you want tot run).
+
+> covar-matrices for use on LEXIS project will be available under DDI
+> both for italy and for france domain. 
 
 ### inputs 
 
@@ -95,9 +102,9 @@ inputs/20201126/wrfinput_d02
 inputs/20201126/wrfinput_d03
 ```
 
-### namelists 
+### namelists.*
 
-this directory must contains namelists for all the various processes
+this directories must contains namelists for all the various processes
 of the simulation you want to run.
 
 The directory must contains following files, named in the same exact way:
@@ -110,10 +117,15 @@ The directory must contains following files, named in the same exact way:
     - wrf_var.txt.wrf_02  - wrf_var.txt files for 2 cycle of assimiltion
     - wrf_var.txt.wrf_03  - wrf_var.txt files for 3 cycle of assimiltion
 
+This repo contains two different version of namelists directory: namelists.italy which
+should be used for Italy domain, and namelists.france for France domain.
+The appropriate directory can be choosed by setging the property NamelistsDir in
+the .cfg file used.
+
 ### observations
 
 This directory contains weather stations and radars datasets you want to 
-ingest during the assimilation phase.
+assimilate during the simulation.
 
 Files must be in WRF assimilation ascii format, and must be named in the following way:
 
@@ -131,7 +143,7 @@ It's possible for WRF to assimilates data of instants slightly different from th
 instant, but the name should nonetheless reflects the nominal instant, not the real one.
 
 In other words, you are allowed to assimilate e.g. radar datas acquired at
-2020-11-26 08:53, but the realtive file should be named 2020112609.
+2020-11-26 08:53, but the realative file should be named 2020112609.
 
 ### wrfda-runner.cfg
 
@@ -161,12 +173,32 @@ it could/should contains following configuration variables:
 * _NamelistsDir_ - path to namelists. Default: ./namelists
             _stuff inside this dir should be organized as explained in [namelists](#namelists)_
 
+This repository contains two config files that could be used 
+to run simulation for France and Italy domain: [france-config.gfs.cfg](france-config.gfs.cfg)
+and [italy-config.gfs.cfg](italy-config.gfs.cfg).
 
 ### schedule-run.sh
 
 script to sbatch schedule the simulation. You'll probably have to change content
 of this scripts in order to accomodate your particular server scheduler and configuration.
 
+The main responsibility of this script is to call the `wrfda-runner` command.
+`wrfda-runner` then will take cares of calling all needed processes using
+MPI commands.
 
-* r2w - https://github.com/meteocima/radar2wrf/
-* dewetra2wrf - https://github.com/meteocima/dewetra2wrf
+Remember to always call `ulimit -s unlimited` before calling 
+`wrfda-runner` scripts, bacause it's needed by WRF.
+
+The script calls `wrfda-runner` without specifing any date arguments, this
+indicates `wrfda-runner` to read dates and config file path from a file called 
+`inputs/arguments.txt` with following format:
+
+```
+italy-config.gfs.cfg
+2020073100 48
+```
+
+This file is produced automatically by [wps-da.gfs](https://github.com/meteocima/wps-da.gfs) and 
+[wps-da.ifs](https://github.com/meteocima/wps-da.ifs) dockers as part of the inputs directory.
+
+
