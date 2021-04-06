@@ -24,3 +24,5 @@ fi
 
 ulimit -s unlimited
 ./wrfda-runner -p DA .
+
+# TODO: improve cd $SLURM_SUBMIT_DIR to use script file dir
