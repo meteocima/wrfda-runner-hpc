@@ -189,7 +189,7 @@ MPI commands.
 Remember to always call `ulimit -s unlimited` before calling 
 `wrfda-runner` scripts, bacause it's needed by WRF.
 
-The script calls `wrfda-runner` without specifing any date arguments, this
+The script calls `wrfda-runner` without speciyfing any date arguments, this
 indicates `wrfda-runner` to read dates and config file path from a file called 
 `inputs/arguments.txt` with following format:
 
