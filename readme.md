@@ -202,3 +202,4 @@ This file is produced automatically by [wps-da.gfs](https://github.com/meteocima
 [wps-da.ifs](https://github.com/meteocima/wps-da.ifs) dockers as part of the inputs directory.
 
 
+TODO: add custom covar-matrices directory for france specific matrices
