@@ -1,26 +1,21 @@
 #!/bin/bash
-#SBATCH -J da
-#SBATCH --get-user-env
-#SBATCH --output=da.out
-#SBATCH --error=da.err
-#SBATCH --nodes=4
-#SBATCH --ntasks-per-node=28
-#SBATCH --mail-type=all
-#SBATCH --mail-user=andrea.parodi@cimafoundation.org
-#SBATCH --time=04:00:00
-#SBATCH --propagate=ALL
-#SBATCH --clusters=cm2
-#SBATCH --partition=cm2_std
-#SBATCH --qos=cm2_std
+#PBS -q qprod
+#PBS -N lexisda
+#PBS -l select=4:ncpus=36
+#PBS -l walltime=05:10:00
+#PBS -A DD-19-14
 
-export DEPS=$SLURM_SUBMIT_DIR/PRG/deps/out;
+ml iccifort/2020.1.217;
+ml impi/2019.7.217-iccifort-2020.1.217
+
+export DEPS=$PBS_O_WORKDIR/PRG/deps/out;
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$DEPS/lib
 export NETCDF=$DEPS
 
-if [[ $SLURM_SUBMIT_DIR != '' ]]; then 
-  echo STARTING IN $SLURM_SUBMIT_DIR
-  cd $SLURM_SUBMIT_DIR
+if [[ $PBS_O_WORKDIR != '' ]]; then 
+  echo STARTING IN $PBS_O_WORKDIR
+  cd $PBS_O_WORKDIR
 fi
 
 ulimit -s unlimited
-./wrfda-runner -p DA .
+./wrfda-runner -p DA . 
