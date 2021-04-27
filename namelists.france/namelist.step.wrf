@@ -42,11 +42,11 @@ ignore_iofields_warning = .true.,
 nwp_diagnostics = 1,
 debug_level = 0,
 write_input = .true.,
-inputout_interval = 1440, 1440,
-inputout_begin_h = 24, 24,
-inputout_end_h = 24, 24,
+inputout_interval = 180, 180,
+inputout_begin_h = 3, 3,
+inputout_end_h = 3, 3,
 inputout_end_m = 10, 10,
-input_outname ="wrfvar_input_d<domain>_<date>",
+input_outname ="wrfvar_input_d<domain>",
 /
 &dfi_control
 /
