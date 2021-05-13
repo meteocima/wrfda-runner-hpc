@@ -3,11 +3,11 @@
 #SBATCH --get-user-env
 #SBATCH --output=da.out
 #SBATCH --error=da.err
-#SBATCH --nodes=5
+#SBATCH --nodes=13
 #SBATCH --ntasks-per-node=28
 #SBATCH --mail-type=all
 #SBATCH --mail-user=andrea.parodi@cimafoundation.org
-#SBATCH --time=03:00:00
+#SBATCH --time=02:40:00
 #SBATCH --propagate=ALL
 #SBATCH --clusters=cm2
 #SBATCH --partition=cm2_std

@@ -1,8 +1,8 @@
 #!/bin/bash
 #PBS -q qprod
 #PBS -N lexisda
-#PBS -l select=4:ncpus=36
-#PBS -l walltime=05:10:00
+#PBS -l select=11:ncpus=36
+#PBS -l walltime=02:40:00
 #PBS -A DD-19-14
 
 ml iccifort/2020.1.217;
