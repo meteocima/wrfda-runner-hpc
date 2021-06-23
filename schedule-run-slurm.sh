@@ -14,7 +14,8 @@
 #SBATCH --qos=cm2_std
 
 export DEPS=$SLURM_SUBMIT_DIR/PRG/deps/out;
-export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$DEPS/lib
+export SAVED_LD_LIBRARY_PATH=$LD_LIBRARY_PATH
+export LD_LIBRARY_PATH=$SAVED_LD_LIBRARY_PATH:$DEPS/lib
 export NETCDF=$DEPS
 
 if [[ $SLURM_SUBMIT_DIR != '' ]]; then 
@@ -24,3 +25,8 @@ fi
 
 ulimit -s unlimited
 ./wrfda-runner -p DA .
+
+export DEPS_CDO=$SLURM_SUBMIT_DIR/PRG/cdo;
+export LD_LIBRARY_PATH=$SAVED_LD_LIBRARY_PATH:$DEPS_CDO/lib
+./scripts/delivery.sh
+
