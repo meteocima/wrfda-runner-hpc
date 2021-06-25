@@ -24,7 +24,7 @@ if [[ $SLURM_SUBMIT_DIR != '' ]]; then
 fi
 
 ulimit -s unlimited
-./wrfda-runner -p DA .
+./wrfda-runner -p DA .  > wrfda-runner.out 2> wrfda-runner.err
 
 export DEPS_CDO=$SLURM_SUBMIT_DIR/PRG/cdo;
 export LD_LIBRARY_PATH=$SAVED_LD_LIBRARY_PATH:$DEPS_CDO/lib
