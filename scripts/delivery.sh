@@ -56,7 +56,7 @@ function regrid_date() {
 	# Merge source file and RH file
 	cdo -v -z zip_2 merge raw-${RUNDATE}.nc rh-${RUNDATE}.nc lexis-$DOMAIN-${RUNDATE}.nc
 
-	DEWETRA_DIR=$SCRIPTDIR/../results/dewetra/$RUNDATE
+	DEWETRA_DIR=$SCRIPTDIR/../results/dewetra/
 	AUX_DIR=$SCRIPTDIR/../results/aux/$RUNDATE
 		
 	mkdir -p $DEWETRA_DIR
