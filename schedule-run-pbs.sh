@@ -26,7 +26,7 @@ export LD_LIBRARY_PATH=$SAVED_LD_LIBRARY_PATH:$DEPS/lib
 export NETCDF=$DEPS
 
 ulimit -s unlimited
-./wrfda-runner -p DA . > wrfda-runner.out 2> wrfda-runner.err
+./wrfda-runner -p DA . 
 
 export DEPS_CDO=$WORKDIR/PRG/cdo;
 export LD_LIBRARY_PATH=$SAVED_LD_LIBRARY_PATH:$DEPS_CDO/lib
