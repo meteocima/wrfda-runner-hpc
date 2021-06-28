@@ -19,6 +19,7 @@ fi
 
 if [[ $DOMAIN == "italy" ]]; then
 	NUMDOMAIN=03
+	
 fi
 
 function regrid_date() {
@@ -55,7 +56,14 @@ function regrid_date() {
 	# Merge source file and RH file
 	cdo -v -z zip_2 merge raw-${RUNDATE}.nc rh-${RUNDATE}.nc lexis-$DOMAIN-${RUNDATE}.nc
 
-	mv lexis-$DOMAIN-${RUNDATE}.nc $SCRIPTDIR/..
+	DEWETRA_DIR=$SCRIPTDIR/../results/dewetra/$RUNDATE
+	AUX_DIR=$SCRIPTDIR/../results/aux/$RUNDATE
+		
+	mkdir -p $DEWETRA_DIR
+	mkdir -p $AUX_DIR
+
+	mv auxhist23_d${NUMDOMAIN}_* $AUX_DIR
+	mv lexis-$DOMAIN-${RUNDATE}.nc $DEWETRA_DIR
 }
 
 set -e
@@ -65,7 +73,6 @@ root=$PWD
 
 echo DOMAIN $DOMAIN 
 echo DATES $dates
-
 
 for d in $dates; do
 	regrid_date $d $root/$d/wrf00
