@@ -77,6 +77,8 @@ echo DATES $dates
 for d in $dates; do
 	hours=`echo $d | cut -c 12-14`
 	date=`echo $d | cut -c 1-8`
-	echo MAIN DATE $date
+	if [[ $hours == 48 ]]; then
+		echo MAIN DATE $date
+	fi
 	# regrid_date $date $root/$date/wrf00
 done
