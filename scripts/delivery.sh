@@ -68,12 +68,17 @@ function regrid_date() {
 
 set -e
 
-dates=`tail -n +2 inputs/arguments.txt | cut -c 1-8`
+dates=`tail -n +2 inputs/arguments.txt`
 root=$PWD
 
 echo DOMAIN $DOMAIN 
 echo DATES $dates
 
 for d in $dates; do
-	regrid_date $d $root/$d/wrf00
+	hours=`echo $d | cut -c 12-14`
+	date=`echo $d | cut -c 1-8`
+	if [[ $hours == 48 ]]; then
+		echo MAIN DATE $date
+	fi
+	# regrid_date $date $root/$date/wrf00
 done
