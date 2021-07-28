@@ -10,9 +10,6 @@ IFS='-' read -ra DOMAIN <<< $CFG
 IFS=$OLD_IFS
 
 
-
-
-
 if [[ $DOMAIN == "france" ]]; then
 	NUMDOMAIN=02
 fi
@@ -22,13 +19,25 @@ if [[ $DOMAIN == "italy" ]]; then
 	
 fi
 
+function move_aux() {
+	RUNDATE=$1
+	SRC_DIR=$2
+
+	cd $SRC_DIR;
+	echo MOVE AUX FOR $RUNDATE;
+
+	AUX_DIR=$SCRIPTDIR/../results/aux/$RUNDATE
+
+	mkdir -p $AUX_DIR
+	mv auxhist23_d${NUMDOMAIN}_* $AUX_DIR
+}
+
 function regrid_date() {
 	RUNDATE=$1
 	SRC_DIR=$2
 
 	cd $SRC_DIR;
 	echo REGRIDDING $RUNDATE;
-	
 
 	if [ `ls -1 auxhist23_d${NUMDOMAIN}_* 2>/dev/null | wc -l ` -gt 0 ]; then
 		echo	    
@@ -57,28 +66,29 @@ function regrid_date() {
 	cdo -v -z zip_2 merge raw-${RUNDATE}.nc rh-${RUNDATE}.nc lexis-$DOMAIN-${RUNDATE}.nc
 
 	DEWETRA_DIR=$SCRIPTDIR/../results/dewetra/
-	AUX_DIR=$SCRIPTDIR/../results/aux/$RUNDATE
 		
 	mkdir -p $DEWETRA_DIR
-	mkdir -p $AUX_DIR
-
-	mv auxhist23_d${NUMDOMAIN}_* $AUX_DIR
 	mv lexis-$DOMAIN-${RUNDATE}.nc $DEWETRA_DIR
 }
 
 set -e
 
-dates=`tail -n +2 inputs/arguments.txt`
+echo DOMAIN $DOMAIN 
+
+i=0
 root=$PWD
 
-echo DOMAIN $DOMAIN 
-echo DATES $dates
-
-for d in $dates; do
-	hours=`echo $d | cut -c 12-14`
-	date=`echo $d | cut -c 1-8`
-	if [[ $hours == 48 ]]; then
-		echo MAIN DATE $date
-	fi
-	# regrid_date $date $root/$date/wrf00
-done
+while read d; do
+	if [[ $i != 0 ]]; then
+		export hours=`echo $d | cut -c 12-13`
+  		export date=`echo $d | cut -c 1-8`
+  		#echo "line n.$i: date=$date hours=$hours"
+  		if [[ $hours == 48 ]]; then
+ 	  		regrid_date $date $root/$date/wrf00
+			move_aux $date $root/$date/wrf00
+		else
+			move_aux $date $root/$date/wrf00
+  		fi
+  	fi
+ 	(( i=i+1 ))
+done < inputs/arguments.txt
