@@ -4,7 +4,7 @@ This repository contains informations and scripts to run a WRFDA simulation on H
 
 These simulation has following charactertics:
 
-1) The simulation is guided either by IFS or GFS datasets. These datasets should already be 
+1) The simulation is guided either by IFS or GFS datasets. These datasets should be 
     prepared by one or more WPS processes. You can use one of our dockers to do this, either 
     [wps-da.gfs](https://github.com/meteocima/wps-da.gfs) or [wps-da.ifs](https://github.com/meteocima/wps-da.ifs).
 
@@ -21,7 +21,6 @@ These simulation has following charactertics:
 To run a simulation on your HPC premises you need to create a directory containig
 following subdirs and files:
 
-
 ### wrfda-runner 
 
 This command takes care of running all the various
@@ -34,10 +33,10 @@ https://github.com/meteocima/wrfda-runner
 Prebuilt binaries should be downloaded from
 https://github.com/meteocima/wrfda-runner/releases/latest
 
-This repository already contains release v2.0.6 of the binary bundled 
+This repository already contains latest release of the binary bundled 
 in source code.
 
-### covar-matrices 
+### covar-matrices-* 
 
 A directory containing pre-built dataset of data needed
 by the assimilation process. This data is common between all runs of a certain 
@@ -70,7 +69,7 @@ covar-matrices/spring/be_d02
 
 which is, you have to provide a file ending in _d0N for every N domain in your
 configuration, and you have to provide a dataset for each season (or at least,
-for the season of the simulation you want tot run).
+for the season of the simulation you want to run).
 
 > covar-matrices for use on LEXIS project will be available under DDI
 > both for italy and for france domain. 
@@ -81,8 +80,7 @@ This directory must contains initial and boundary conditions for the
 simulation, as produced by WPS process. There should be a boundary file
 for each of the 3 cycle of assimilation of your outhermost domain, and an initial 
 condition for every nested files. In case you want to run simulation for multiple dates, 
-in order e.g. to feed warmup data to dowstream simulation chains, you have to provide inputs for 
-each one of the needed dates.
+in order e.g. to feed warmup data to dowstream simulation chains, you have to provide inputs for each one of the needed dates.
 
 Files have to be organized in following way, to run simulations
 for two different dates on a setup with 2 domains:
@@ -119,7 +117,7 @@ The directory must contains following files, named in the same exact way:
 
 This repo contains two different version of namelists directory: namelists.italy which
 should be used for Italy domain, and namelists.france for France domain.
-The appropriate directory can be choosed by setging the property NamelistsDir in
+The appropriate directory can be choosed by setting the property NamelistsDir in
 the .cfg file used.
 
 ### observations
@@ -145,7 +143,7 @@ instant, but the name should nonetheless reflects the nominal instant, not the r
 In other words, you are allowed to assimilate e.g. radar datas acquired at
 2020-11-26 08:53, but the realative file should be named 2020112609.
 
-### wrfda-runner.cfg
+### *-config. *.cfg
 
 This is the main configuration files used by https://github.com/meteocima/wrfda-runner
 it could/should contains following configuration variables:
@@ -177,9 +175,9 @@ This repository contains two config files that could be used
 to run simulation for France and Italy domain: [france-config.gfs.cfg](france-config.gfs.cfg)
 and [italy-config.gfs.cfg](italy-config.gfs.cfg).
 
-### schedule-run.sh
+### schedule-run-*.sh
 
-script to sbatch schedule the simulation. You'll probably have to change content
+scripts to schedule the simulation. You'll probably have to change content
 of this scripts in order to accomodate your particular server scheduler and configuration.
 
 The main responsibility of this script is to call the `wrfda-runner` command.
@@ -198,7 +196,6 @@ italy-config.gfs.cfg
 2020073100 48
 ```
 
-This file is produced automatically by [wps-da.gfs](https://github.com/meteocima/wps-da.gfs) and 
-[wps-da.ifs](https://github.com/meteocima/wps-da.ifs) dockers as part of the inputs directory.
+This file is produced automatically by [wps-da.gfs](https://github.com/meteocima/wps-da.gfs) and [wps-da.ifs](https://github.com/meteocima/wps-da.ifs) dockers as part of the inputs directory.
 
 
