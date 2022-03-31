@@ -1,6 +1,6 @@
 gfs
 inputs 
 observations
-covar-matrices-*
+covar-matrices
 geo
 PRG
