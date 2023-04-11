@@ -52,7 +52,7 @@ function regrid_date() {
 	
 	for auxf in $auxfiles; do
 		echo regridding $auxf
-		cdo -f nc4c setreftime,2000-01-01,00:00:00 -setcalendar,standard -remapbil,$SCRIPTDIR/$DOMAIN-cdo-d${NUMDOMAIN}-grid.txt -selgrid,1 $auxf regrid-$auxf.nc
+		cdo setreftime,2000-01-01,00:00:00 -setcalendar,standard -remapbil,$SCRIPTDIR/$DOMAIN-cdo-d${NUMDOMAIN}-grid.txt -selgrid,1 $auxf regrid-$auxf.nc
 	done
 
 
@@ -63,7 +63,7 @@ function regrid_date() {
 	cdo -L -setrtoc,100,1.e99,100 -setunit,"%" -expr,$RH_EXPR raw-${RUNDATE}.nc rh-${RUNDATE}.nc
 
 	# Merge source file and RH file
-	cdo -v -z zip_2 merge raw-${RUNDATE}.nc rh-${RUNDATE}.nc lexis-$DOMAIN-${RUNDATE}.nc
+	cdo -v merge raw-${RUNDATE}.nc rh-${RUNDATE}.nc lexis-$DOMAIN-${RUNDATE}.nc
 
 	DEWETRA_DIR=$SCRIPTDIR/../results/dewetra/
 		
@@ -83,7 +83,7 @@ while read d; do
 		export hours=`echo $d | cut -c 12-13`
   		export date=`echo $d | cut -c 1-8`
   		#echo "line n.$i: date=$date hours=$hours"
-  		if [[ $hours == 48 ]]; then
+  		if [[ $hours == 12 ]]; then
  	  		regrid_date $date $root/$date/wrf00
 			move_aux $date $root/$date/wrf00
 		else
