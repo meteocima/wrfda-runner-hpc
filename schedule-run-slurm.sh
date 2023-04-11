@@ -8,7 +8,7 @@
 #SBATCH --mail-type=all
 #SBATCH --mail-user=andrea.parodi@cimafoundation.org
 #SBATCH --time=04:40:00
-#SBATCH --propagate=ALL
+###SBATCH --propagate=ALL
 #SBATCH --clusters=cm2
 #SBATCH --partition=cm2_std
 #SBATCH --qos=cm2_std

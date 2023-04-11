@@ -3,7 +3,7 @@
 #PBS -N lexisda
 #PBS -l select=11:ncpus=36
 #PBS -l walltime=4:00:00
-#PBS -A DD-19-14
+#PBS -A DD-22-29
 
 ml iccifort/2020.1.217;
 ml impi/2019.7.217-iccifort-2020.1.217
