@@ -83,7 +83,7 @@ while read d; do
 		export hours=`echo $d | cut -c 12-13`
   		export date=`echo $d | cut -c 1-8`
   		#echo "line n.$i: date=$date hours=$hours"
-  		if [[ $hours == 12 ]]; then
+  		if [[ $hours == 48 ]]; then
  	  		regrid_date $date $root/$date/wrf00
 			move_aux $date $root/$date/wrf00
 		else
