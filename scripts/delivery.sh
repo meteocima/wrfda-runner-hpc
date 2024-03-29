@@ -37,11 +37,14 @@ function move_aux() {
 
 	cd $SRC_DIR;
 	echo MOVE AUX FOR $RUNDATE;
+	rm *.nc *.2 *.3 *.ncks.tmp || echo no temp files found
 
 	AUX_DIR=$SCRIPTDIR/../results/aux/$RUNDATE
 
 	mkdir -p $AUX_DIR
 	mv auxhist23_d${NUMDOMAIN}_* $AUX_DIR
+
+	echo OK AUX files moved to results dir
 }
 
 function regrid_date() {
@@ -67,10 +70,10 @@ function regrid_date() {
 		ncks -A -v XLONG_U,XLAT_U,XLONG_V,XLAT_V wrfout_d03_* $auxf
 		ncks -O -x -v P_PL,U_PL,T_PL,Q_PL,V_PL,GHT_PL,S_PL,RH_PL,TD_PL,C1H,C2H,C1F,C2F,C3H,C4H,C3F,C4F $auxf $auxf.2
 		cdo -remapbil,$SCRIPTDIR/$DOMAIN-cdo-d${NUMDOMAIN}-grid.txt -selgrid,1,2,3 $auxf.2 $auxf.3
-		date=$(basename $auxf | cut -c 15-24)
+		dt=$(basename $auxf | cut -c 15-24)
 		time=$(basename $auxf | cut -c 26-34)
-   		echo Fixing time for $(basename $auxf) to $date $time 
-		cdo -O settaxis,$date,$time $auxf.3 regrid-$auxf.nc
+   		echo Fixing time for $(basename $auxf) to $dt $time 
+		cdo -O settaxis,$dt,$time $auxf.3 regrid-$auxf.nc
 	done
 
 	# Merge all files into one that contains all simulation hours
