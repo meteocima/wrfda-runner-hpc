@@ -1,13 +1,18 @@
 #!/bin/bash
 
 SCRIPTDIR=$PWD/scripts
-NCO=/mnt/proj2/dd-20-34/BUILD-NOCOMP/nco/
+PRG=/mnt/proj2/dd-20-34/BUILD-NOCOMP
+NCO=$PRG/nco/
+DEPS=$PRG/deps/out;
 
 RH_EXPR="RH2=100*(PSFC*Q2/0.622)/(611.2*exp(17.67*(T2-273.15)/((T2-273.15)+243.5)))"
 RAINSUM_EXPR="RAINSUM=RAINNC+RAINC"
 
 CFG=`head -n 1 inputs/arguments.txt`
 IFS='-' read -ra DOMAIN <<< $CFG
+
+export LD_LIBRARY_PATH=$NCO/lib:$DEPS/lib
+export PATH=$PATH:$NCO/bin
 
 module purge
 ml GSL/2.7-GCC-10.3.0 
@@ -16,9 +21,6 @@ ml netCDF/4.8.0-gompi-2021a
 ml iccifort/2020.1.217
 ml impi/2019.9.304-iccifort-2020.1.217
 ml CDO/2.1.1-gompi-2021a
-
-export LD_LIBRARY_PATH=$NCO/lib
-export PATH=$PATH:$NCO/bin
 
 if [[ $DOMAIN == "france" ]]; then
 	NUMDOMAIN=02
