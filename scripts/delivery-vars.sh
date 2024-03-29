@@ -18,7 +18,7 @@ ml impi/2019.9.304-iccifort-2020.1.217
 ml CDO
 
 export LD_LIBRARY_PATH=$NCO/lib
-export PATH=$PATH:$CDO/bin:$NCO/bin
+export PATH=$PATH:$NCO/bin
 
 
 
