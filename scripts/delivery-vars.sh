@@ -1,22 +1,23 @@
 #!/bin/bash
 
+SCRIPTDIR=$PWD/scripts
+NCO=/mnt/proj2/dd-20-34/BUILD-NOCOMP/nco/
+
 RH_EXPR="RH2=100*(PSFC*Q2/0.622)/(611.2*exp(17.67*(T2-273.15)/((T2-273.15)+243.5)))"
 RAINSUM_EXPR="RAINSUM=RAINNC+RAINC"
-SCRIPTDIR=$PWD/scripts
 
 CFG=`head -n 1 inputs/arguments.txt`
 IFS='-' read -ra DOMAIN <<< $CFG
 
+module purge
 ml GSL/2.7-GCC-10.3.0 
 ml UDUNITS/2.2.28-GCCcore-10.3.0 
 ml netCDF/4.8.0-gompi-2021a
 ml iccifort/2020.1.217
 ml impi/2019.9.304-iccifort-2020.1.217
 ml CDO
-#export CDO=/mnt/proj2/dd-20-34/BUILD-NOCOMP/cdo/
-export NCO=/mnt/proj2/dd-20-34/BUILD-NOCOMP/nco/
-#export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$CDO/lib:$NCO/lib
-export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$NCO/lib
+
+export LD_LIBRARY_PATH=$NCO/lib
 export PATH=$PATH:$CDO/bin:$NCO/bin
 
 
@@ -70,13 +71,10 @@ function regrid_date() {
 		time=$(basename $auxf | cut -c 26-34)
    		echo Fixing time for $(basename $auxf) to $date $time 
 		cdo -O settaxis,$date,$time $auxf.3 regrid-$auxf.nc
-
 	done
-
 
 	# Merge all files into one that contains all simulation hours
 	cdo -v mergetime regrid* raw-${RUNDATE}.nc
-
 	
 	# Calculate RH variable
 	cdo -L -setrtoc,100,1.e99,100 -setunit,"%" -expr,$RH_EXPR raw-${RUNDATE}.nc rh-${RUNDATE}.nc
@@ -101,13 +99,8 @@ while read d; do
 	if [[ $i != 0 ]]; then
 		export hours=`echo $d | cut -c 12-13`
   		export date=`echo $d | cut -c 1-8`
-  		#echo "line n.$i: date=$date hours=$hours"
-#  		if [[ $hours == 48 ]]; then
- 	  		regrid_date $date $root/$date/wrf00
-			move_aux $date $root/$date/wrf00
-#		else
-#			move_aux $date $root/$date/wrf00
-# 		fi
+		regrid_date $date $root/$date/wrf00
+		move_aux $date $root/$date/wrf00
   	fi
  	(( i=i+1 ))
 done < inputs/arguments.txt
