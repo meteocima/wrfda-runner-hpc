@@ -15,12 +15,10 @@ ml UDUNITS/2.2.28-GCCcore-10.3.0
 ml netCDF/4.8.0-gompi-2021a
 ml iccifort/2020.1.217
 ml impi/2019.9.304-iccifort-2020.1.217
-ml CDO
+ml CDO/2.1.1-gompi-2021a
 
 export LD_LIBRARY_PATH=$NCO/lib
 export PATH=$PATH:$NCO/bin
-
-
 
 if [[ $DOMAIN == "france" ]]; then
 	NUMDOMAIN=02
