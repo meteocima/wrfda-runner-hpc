@@ -58,7 +58,7 @@ function regrid_date() {
 	    return
 	fi
 
-	rm *.nc *.2 *.3 || echo no previous regridded files found
+	rm *.nc *.2 *.3 *.ncks.tmp|| echo no previous regridded files found
 
 	auxfiles=`ls -fd auxhist23_d${NUMDOMAIN}_*`
 	
